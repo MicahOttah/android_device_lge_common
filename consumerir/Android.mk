@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Devices without LG's libcir_driver blob use the AOSP IR HAL instead
+ifeq ($(filter v521,$(TARGET_DEVICE)),)
+
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
@@ -41,3 +44,4 @@ LOCAL_VENDOR_MODULE := true
 
 include $(BUILD_EXECUTABLE)
 
+endif
