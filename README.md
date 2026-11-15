@@ -12,13 +12,26 @@ G Pad X 8.0 (V521)** port to **LineageOS 15.1** (Android 8.1).
 
 | Commit | Subject |
 | --- | --- |
-| `5a675e1` | v521: do not build the consumer IR HAL |
+| `a60d894` | v521: do not build LG's own consumer IR service |
 
-The consumer IR service is built from the CAF blob `libcir_driver.so` on
-the other LG devices, and that blob does not exist for the V521.  Building
-the AOSP `consumerir` service for the V521 instead fails at run time,
-because the manifest of the service points at a service implementation that
-is not in the ROM.  The whole module is therefore skipped for the V521.
+The consumer IR service of the other LG devices is not the AOSP one: it
+drives LG's IR transmitter over the device's own UART (`/dev/ttyHSL1`) and
+gets the transmit function from the CAF blob `libcir_driver.so`, which is
+only in the blob sets of the g2, g3, g4 and msm8996 (joan) devices.
+
+`device/lge/common/Android.mk` includes every makefile under it for every
+LG device, so the module was built for the V521 as well and the build
+stopped with
+
+```
+device/lge/common/consumerir/Android.mk: error:
+    android.hardware.ir@1.0-service.lge (EXECUTABLES android-arm)
+    missing libcir_driver (SHARED_LIBRARIES android-arm)
+```
+
+The V521 does not need that service - its transmitter is on SPI6, and the
+AOSP service loads the CAF blob `consumerir.msm8952.so` instead - so only
+the LG specific module is skipped.
 
 ## The port
 
