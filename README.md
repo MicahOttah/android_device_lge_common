@@ -12,7 +12,7 @@ G Pad X 8.0 (V521)** port to **LineageOS 15.1** (Android 8.1).
 
 | Commit | Subject |
 | --- | --- |
-| `a60d894` | v521: do not build LG's own consumer IR service |
+| `7a9c238` | v521: do not build LG's own consumer IR service |
 
 The consumer IR service of the other LG devices is not the AOSP one: it
 drives LG's IR transmitter over the device's own UART (`/dev/ttyHSL1`) and
